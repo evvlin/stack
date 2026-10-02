@@ -1,0 +1,97 @@
+eto dermo rabotaet naher!
+__________STACKDUMP___________
+result of stack_functions.cpp on line 20
+capacity = 5 
+size = 0
+data = 00B91468
+POIZON
+POIZON
+POIZON
+POIZON
+POIZON
+__________STACKDUMP___________
+result of stack_functions.cpp on line 20
+capacity = 5 
+size = 0
+data = 00B91498
+POIZON
+POIZON
+POIZON
+POIZON
+POIZON
+__________STACKDUMP___________
+result of stack_functions.cpp on line 39
+capacity = 5 
+size = 1
+data = 00B91498
+0 element =  1.0000 
+POIZON
+POIZON
+POIZON
+POIZON
+__________STACKDUMP___________
+result of stack_functions.cpp on line 39
+capacity = 5 
+size = 2
+data = 00B91498
+0 element =  1.0000 
+1 element =  2.0000 
+POIZON
+POIZON
+POIZON
+__________STACKDUMP___________
+result of stack_functions.cpp on line 39
+capacity = 5 
+size = 3
+data = 00B91498
+0 element =  1.0000 
+1 element =  2.0000 
+2 element =  3.0000 
+POIZON
+POIZON
+__________STACKDUMP___________
+result of stack_functions.cpp on line 39
+capacity = 5 
+size = 4
+data = 00B91498
+0 element =  1.0000 
+1 element =  2.0000 
+2 element =  3.0000 
+3 element =  4.0000 
+POIZON
+this value is pozoined, use another one
+__________STACKDUMP___________
+result of stack_functions.cpp on line 39
+capacity = 5 
+size = 5
+data = 00B91498
+0 element =  1.0000 
+1 element =  2.0000 
+2 element =  3.0000 
+3 element =  4.0000 
+4 element =  5.0000 
+__________STACKDUMP___________
+result of stack_functions.cpp on line 60
+capacity = 5 
+size = 4
+data = 00B91498
+0 element =  1.0000 
+1 element =  2.0000 
+2 element =  3.0000 
+3 element =  4.0000 
+POIZON
+__________STACKDUMP___________
+result of stack_main.cpp on line 53
+capacity = 5 
+size = 4
+data = 00B91498
+0 element =  1.0000 
+1 element =  2.0000 
+2 element =  3.0000 
+3 element =  4.0000 
+POIZON
+__________STACKDUMP___________
+result of stack_functions.cpp on line 128
+capacity = 0 
+size = 0
+data = 00000000

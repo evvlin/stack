@@ -3,50 +3,90 @@
 #include <stdlib.h>
 #include "stack.h"
 
-int StackInit(Stack *stk, int capacity)
+
+int StackInit(Stack *stk, int capacity, FILE *file)
 {
     assert(stk);
-    stk ->capacity = capacity;
-
-    stk -> data = (double *)calloc(capacity, sizeof(double));
-
+    stk->capacity = capacity;
+    stk->size = 0;
+    stk->file = file;
+    stk->data = (double *)calloc(capacity, sizeof(double));
+    
+    StackVerify(stk);
+    for(int i = 0; i < stk->capacity; i++)
+    {
+        stk->data[i] = STACK_POIZON;
+    }
+    STACK_DUMP;
     return 0;
 }
 
 int StackPush(Stack *stk, double value)
 {
     assert(stk);
-    if( stk->size >= stk->capacity)
+    if(value == STACK_POIZON)
+    {
+        fprintf(stk->file, "this value is pozoined, use another one\n");
+        return 1;
+    }
+    if(stk->size >= stk->capacity)
     {
         ReallocationStack(stk);
     }
     stk -> data[stk -> size++] = value;
+    StackVerify(stk);
+    
+    STACK_DUMP;
+
+    return 0;
 }
 
 double StackPop(Stack *stk)
 {
     assert(stk);
+    if (stk->size == 0)
+    {
+        printf("can't pop from empty stack\n");
+        return 0;
+    }
     stk -> size--;
     double x = stk -> data[stk -> size]; 
     printf("x = %.4lf \n", x);
-    
+
+    stk->data[stk->size] = STACK_POIZON;
+
+
+    StackVerify(stk);
+    STACK_DUMP;
+
     return x;
 }
 
-double StackDump(Stack *stk)
+void StackDump(Stack *stk, const char *function, int line)
 {
     assert(stk);
-    printf("__________STACKDUMP___________\n");
-    printf("capacity = %d \n", stk->capacity);
-    printf("size = %d\n", stk ->size);
+    FILE *file = stk->file;
+   
 
-    printf("data = %p\n", stk->data);
+
+    fprintf(file, "__________STACKDUMP___________\n");
+    fprintf(file, "result of %s on line %d\n", function, line);
+    fprintf(file, "capacity = %d \n", stk->capacity);
+    fprintf(file, "size = %d\n", stk ->size);
+    fprintf(file, "data = %p\n", stk->data);
 
     for(int i = 0; i < stk->capacity; i++)
     {
-        printf("%d element =  %.4lf \n", i, stk->data[i]);
+        if(stk->data[i] == STACK_POIZON)
+        {
+            fprintf(file, "POIZON\n");
+        }
+        else
+        {
+            fprintf(file, "%d element =  %.4lf \n", i, stk->data[i]);
+        }
+        
     }
-
 
 }
 
@@ -54,26 +94,25 @@ double StackDump(Stack *stk)
 int ReallocationStack(Stack *stk)
 {
     assert(stk);
-    StackDump(stk);
+   
 
-    double *ptr = (double *)realloc(stk->data, 2 * stk->capacity * sizeof(double));
+    double *new_capacity = (double *)realloc(stk->data, 2 * stk->capacity * sizeof(double));
 
-    if( ptr == NULL)
+    if( new_capacity == NULL)
     {
         StackDtor(stk);
     }
         
-
-    free(stk->data);
-    stk->data = ptr; 
+    stk->data = new_capacity; 
     stk->capacity = 2 * stk->capacity;
 
     for(int i = stk->size; i < stk->capacity; i++)
     {
-        stk->data[i] = {0};
+        stk->data[i] = STACK_POIZON;
     }
 
-    StackDump(stk);
+    StackVerify(stk);
+
     return 0;
 }
 
@@ -86,55 +125,49 @@ void StackDtor(Stack *stk)
     stk->capacity = 0;
     stk->size = 0;
 
-    StackDump(stk);
+   STACK_DUMP;
+
 }
 
 
-StackError StackVerify(Stack *stk)
+int StackVerify(Stack *stk) //cpp с тестами
 {
     if (stk == NULL)
     {
-        return STACK_IS_NULL;
+        printf("stack is null\n");
+        return 1;
     }
 
-    if(stk->data == NULL)
+    if(stk->data == NULL && (stk->size != 0 || stk->capacity != 0)) 
     {
-        if(stk->size != 0)
-        {
-            return SIZE_IS_NOT_NULL;
-        }
-        if(stk->capacity != 0)
-        {
-            return CAPACITY_IS_NOT_NULL; 
-        }
+        printf("stack is null, but cap or size in not\n");
+        return 1; 
     }
 
-    if(stk->data != NULL)
+    if(stk->data != NULL && stk->capacity == 0)
     {
-       if(stk->size == 0)
-        {
-            return SIZE_IS_NULL;
-        }
-        if(stk->capacity == 0)
-        {
-            return CAPACITY_IS_NULL;  
-        } 
+        printf("stack is not null, but cap or size is\n");
+        return 1;  
     }
 
     if(stk->size > stk->capacity)
     {
-        return SIZE_BIGGER_CAPACITY;
+        printf("size is bigger than cap\n");
+        return 1;
     }
 
     if(stk->capacity < 0)
     {
-        return CAPACITY_UNDERFLOW;
+        printf("cap smaller than 0\n");
+        return 1;
     }
 
     if(stk->size < 0)
     {
-        return SIZE_UNDERFLOW;
+        printf("size smaller than 0\n");
+        return 1;
     }
 
 
+    return 0;
 }
