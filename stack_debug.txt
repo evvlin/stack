@@ -1,97 +1,110 @@
 eto dermo rabotaet naher!
 __________STACKDUMP___________
-result of stack_functions.cpp on line 20
-capacity = 5 
-size = 0
-data = 00B91468
-POIZON
-POIZON
-POIZON
-POIZON
-POIZON
-__________STACKDUMP___________
-result of stack_functions.cpp on line 20
-capacity = 5 
-size = 0
-data = 00B91498
-POIZON
-POIZON
-POIZON
-POIZON
-POIZON
-__________STACKDUMP___________
-result of stack_functions.cpp on line 39
+NO ERROR
+result of StackInit on line 22
 capacity = 5 
 size = 1
-data = 00B91498
-0 element =  1.0000 
+data = 00BB1468
+idi hahui
+POIZON
 POIZON
 POIZON
 POIZON
 POIZON
 __________STACKDUMP___________
-result of stack_functions.cpp on line 39
+NO ERROR
+result of StackPush on line 46
 capacity = 5 
 size = 2
-data = 00B91498
-0 element =  1.0000 
-1 element =  2.0000 
+data = 00BB1468
+sosite
+1 element =  1.0000 
+POIZON
 POIZON
 POIZON
 POIZON
 __________STACKDUMP___________
-result of stack_functions.cpp on line 39
+NO ERROR
+result of StackPush on line 46
 capacity = 5 
 size = 3
-data = 00B91498
-0 element =  1.0000 
-1 element =  2.0000 
-2 element =  3.0000 
+data = 00BB1468
+sosite
+1 element =  1.0000 
+2 element =  2.0000 
+POIZON
 POIZON
 POIZON
 __________STACKDUMP___________
-result of stack_functions.cpp on line 39
+NO ERROR
+result of StackPush on line 46
 capacity = 5 
 size = 4
-data = 00B91498
-0 element =  1.0000 
-1 element =  2.0000 
-2 element =  3.0000 
-3 element =  4.0000 
+data = 00BB1468
+sosite
+1 element =  1.0000 
+2 element =  2.0000 
+3 element =  3.0000 
 POIZON
-this value is pozoined, use another one
+POIZON
 __________STACKDUMP___________
-result of stack_functions.cpp on line 39
+NO ERROR
+result of StackPush on line 46
 capacity = 5 
 size = 5
-data = 00B91498
-0 element =  1.0000 
-1 element =  2.0000 
-2 element =  3.0000 
-3 element =  4.0000 
-4 element =  5.0000 
-__________STACKDUMP___________
-result of stack_functions.cpp on line 60
-capacity = 5 
-size = 4
-data = 00B91498
-0 element =  1.0000 
-1 element =  2.0000 
-2 element =  3.0000 
-3 element =  4.0000 
+data = 00BB1468
+sosite
+1 element =  1.0000 
+2 element =  2.0000 
+3 element =  3.0000 
+4 element =  4.0000 
 POIZON
 __________STACKDUMP___________
-result of stack_main.cpp on line 53
+NO ERROR
+result of StackPush on line 46
 capacity = 5 
-size = 4
-data = 00B91498
-0 element =  1.0000 
-1 element =  2.0000 
-2 element =  3.0000 
-3 element =  4.0000 
+size = 6
+data = 00BB1468
+sosite
+1 element =  1.0000 
+2 element =  2.0000 
+3 element =  3.0000 
+4 element =  4.0000 
+5 element =  6666.6767 
+this value is pozoined, use another one
+__________STACKDUMP___________
+NO ERROR
+result of StackPop on line 65
+capacity = 5 
+size = 5
+data = 00BB1468
+ebanoe sostoianie of ebanogo steka vova eblan poprosil nahuiato napisat 67
+1 element =  1.0000 
+2 element =  2.0000 
+3 element =  3.0000 
+4 element =  4.0000 
 POIZON
 __________STACKDUMP___________
-result of stack_functions.cpp on line 128
-capacity = 0 
-size = 0
-data = 00000000
+NO ERROR
+result of main on line 48
+capacity = 5 
+size = 5
+data = 00BB1468
+main
+1 element =  1.0000 
+2 element =  2.0000 
+3 element =  3.0000 
+4 element =  4.0000 
+POIZON
+__________STACKDUMP___________
+NO ERROR
+result of StackDtor on line 143
+capacity = 5 
+size = 5
+data = 00BB1468
+
+1 element =  1.0000 
+2 element =  2.0000 
+3 element =  3.0000 
+4 element =  4.0000 
+POIZON

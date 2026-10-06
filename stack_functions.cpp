@@ -1,50 +1,57 @@
 #include <stdio.h>
 #include <assert.h>
 #include <stdlib.h>
+#include <math.h>
 #include "stack.h"
 
 
 int StackInit(Stack *stk, int capacity, FILE *file)
 {
-    assert(stk);
     stk->capacity = capacity;
-    stk->size = 0;
+    stk->size = 1;
     stk->file = file;
-    stk->data = (double *)calloc(capacity, sizeof(double));
+    stk->data = (double *)calloc(capacity + 2, sizeof(double));
     
     StackVerify(stk);
-    for(int i = 0; i < stk->capacity; i++)
+    stk->data[0] = CANARY;
+    for(int i = 1; i <= (stk->capacity + 1); i++)
     {
         stk->data[i] = STACK_POIZON;
     }
-    STACK_DUMP;
+    stk->data[stk->capacity + 1] = CANARY;
+    STACK_DUMP(stk, "idi hahui");
     return 0;
 }
 
+int DoubleCompare(double a, double b)
+{
+    return (fabs(a - b) < epsilon);   
+  
+}
 int StackPush(Stack *stk, double value)
 {
-    assert(stk);
-    if(value == STACK_POIZON)
+    StackVerify(stk); 
+    if(DoubleCompare(value, STACK_POIZON))
     {
         fprintf(stk->file, "this value is pozoined, use another one\n");
         return 1;
     }
-    if(stk->size >= stk->capacity)
+    if(stk->size >= stk->capacity + 1)
     {
         ReallocationStack(stk);
     }
+
     stk -> data[stk -> size++] = value;
-    StackVerify(stk);
     
-    STACK_DUMP;
+    STACK_DUMP(stk, "sosite");
 
     return 0;
 }
 
 double StackPop(Stack *stk)
 {
-    assert(stk);
-    if (stk->size == 0)
+    StackVerify(stk);
+    if (stk->size == 1)
     {
         printf("can't pop from empty stack\n");
         return 0;
@@ -55,27 +62,44 @@ double StackPop(Stack *stk)
 
     stk->data[stk->size] = STACK_POIZON;
 
-
-    StackVerify(stk);
-    STACK_DUMP;
+    STACK_DUMP(stk, "ebanoe sostoianie of ebanogo steka vova eblan poprosil nahuiato napisat 67");
 
     return x;
 }
 
-void StackDump(Stack *stk, const char *function, int line)
+void StackDump(Stack *stk, const char *function, int line, const char *commentariy)
 {
-    assert(stk);
+   
     FILE *file = stk->file;
    
-
-
     fprintf(file, "__________STACKDUMP___________\n");
+    if(stk->error == 0)
+    {
+        fprintf(file, "NO ERROR\n");
+    }
+    else
+    {
+        switch(stk->error){
+            case STK_CAPACITY_NULL: fprintf(file, "STK_CAPACITY_NULL\n"); break;
+            case  STK_SIZE_BIGGER_CAP: fprintf(file, "STK_SIZE_BIGGER_CAP\n"); break;
+            case  STK_CAP_UNDER_ZERO: fprintf(file, "STK_CAP_UNDER_ZERO\n"); break;
+            case  STK_SIZE_UNDER_ZERO: fprintf(file, "STK_SIZE_UNDER_ZERO\n"); break;
+            case  STK_CAP_SIZE_NOT_NULL: fprintf(file, "STK_CAP_SIZE_NOT_NULL\n"); break;
+            case  STK_IS_NULL: fprintf(file, "STK_IS_NULL\n"); break;
+            default: fprintf(file, "undefined\n"); break;
+
+        }
+        fprintf(file, "%d\n", stk->error);
+    }
+    
     fprintf(file, "result of %s on line %d\n", function, line);
     fprintf(file, "capacity = %d \n", stk->capacity);
     fprintf(file, "size = %d\n", stk ->size);
     fprintf(file, "data = %p\n", stk->data);
+    fprintf(file, "%s\n", commentariy);
+    
 
-    for(int i = 0; i < stk->capacity; i++)
+    for(int i = 1; i < stk->capacity + 1; i++)
     {
         if(stk->data[i] == STACK_POIZON)
         {
@@ -93,81 +117,76 @@ void StackDump(Stack *stk, const char *function, int line)
 
 int ReallocationStack(Stack *stk)
 {
-    assert(stk);
+    StackVerify(stk);
    
+    double *new_capacity = (double *)realloc(stk->data, (2 * stk->capacity + 2) * sizeof(double));
 
-    double *new_capacity = (double *)realloc(stk->data, 2 * stk->capacity * sizeof(double));
-
-    if( new_capacity == NULL)
+    if(new_capacity == NULL)
     {
         StackDtor(stk);
     }
-        
+    
     stk->data = new_capacity; 
+    stk->data[stk->capacity + 1] = STACK_POIZON;
     stk->capacity = 2 * stk->capacity;
+    stk->data[stk->capacity + 1] = CANARY;
 
     for(int i = stk->size; i < stk->capacity; i++)
     {
         stk->data[i] = STACK_POIZON;
     }
-
-    StackVerify(stk);
-
     return 0;
 }
 
 void StackDtor(Stack *stk)
 {
-    assert(stk);
+    STACK_DUMP(stk,"");
+    StackVerify(stk);
     free(stk->data);
     
     stk->data = 0;
     stk->capacity = 0;
     stk->size = 0;
-
-   STACK_DUMP;
-
 }
 
-
-int StackVerify(Stack *stk) //cpp с тестами
+int StackVerify(Stack *stk) 
 {
     if (stk == NULL)
     {
-        printf("stack is null\n");
+        stk->error = STK_IS_NULL;
         return 1;
     }
 
-    if(stk->data == NULL && (stk->size != 0 || stk->capacity != 0)) 
+    if(stk->data == NULL && (stk->size != 1 || stk->capacity != 0)) 
     {
-        printf("stack is null, but cap or size in not\n");
+        stk->error = STK_CAP_SIZE_NOT_NULL;
         return 1; 
     }
 
     if(stk->data != NULL && stk->capacity == 0)
     {
-        printf("stack is not null, but cap or size is\n");
+        stk->error = STK_CAPACITY_NULL;
         return 1;  
     }
 
-    if(stk->size > stk->capacity)
+    if(stk->size > stk->capacity + 1)
     {
-        printf("size is bigger than cap\n");
+        stk->error = STK_SIZE_BIGGER_CAP;
         return 1;
     }
 
     if(stk->capacity < 0)
     {
-        printf("cap smaller than 0\n");
+        stk->error = STK_CAP_UNDER_ZERO;
         return 1;
     }
 
-    if(stk->size < 0)
+    if(stk->size < 1)
     {
-        printf("size smaller than 0\n");
+        stk->error = STK_SIZE_UNDER_ZERO;
         return 1;
     }
 
-
+    stk->error = STK_OK;
     return 0;
 }
